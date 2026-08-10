@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════════
+   Agent-Flow Profiler · design system
+
+   Referência: Langfuse, Resend, Prisma, Trigger.dev. São open source
+   e têm site melhor que a maioria dos SaaS pagos. O que eles têm em
+   comum: escala tipográfica refinada, muito respiro, UI de produto
+   em moldura polida, e UMA cor de acento.
+
+   Mono é a língua do código, não da página.
+   ══════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  --color-base: #08080a;
+  --color-panel: #0e0e11;
+  --color-raised: #151519;
+  --color-edge: #232327;
+  --color-edge-hi: #35353b;
+
+  --color-ink: #fafafa;
+  --color-ink-2: #a1a1aa; /* zinc-400 · corpo   */
+  --color-ink-3: #71717a; /* zinc-500 · rótulo  */
+
+  /* âmbar: a feature matadora é custo em dólar, e âmbar lê como valor.
+     Não é o azul de todo produto de IA nem o verde de terminal hacker. */
+  --color-acc: #f5a623;
+  --color-acc-hi: #ffc255;
+  --color-err: #f2555a;
+  --color-ok: #3ecf8e;
+
+  --font-sans: var(--f-sans);
+  --font-mono: var(--f-mono);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+  body {
+    background: var(--color-base);
+    color: var(--color-ink);
+    font-family: var(--f-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1 }
+  50%      { opacity: .3 }
+}
+.pulse-dot { animation: pulseDot 2s ease-in-out infinite }
+
+@keyframes dash {
+  to { stroke-dashoffset: -14 }
+}
+.flowing { stroke-dasharray: 4 5; animation: dash 1.1s linear infinite }
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot, .flowing { animation: none }
+}
