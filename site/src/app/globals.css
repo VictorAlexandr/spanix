@@ -1,60 +1,191 @@
 @import "tailwindcss";
 
-/* ══════════════════════════════════════════════════════════════
-   Agent-Flow Profiler · design system
+/* ============================================================
+   Agent-Flow Profiler — identidade portada da lattis.
+   Aurora ultravioleta · Sora · branco no acento · violeta no sinal
+   ============================================================ */
 
-   Referência: Langfuse, Resend, Prisma, Trigger.dev. São open source
-   e têm site melhor que a maioria dos SaaS pagos. O que eles têm em
-   comum: escala tipográfica refinada, muito respiro, UI de produto
-   em moldura polida, e UMA cor de acento.
+@theme {
+  --color-void: #050409;
+  --color-ink: #f2f1f7;
+  --color-ink-2: #c6c2d4;
+  --color-ink-3: #8e8aa0;
+  --color-viol: #8a6eff;
+  --color-crim: #ff2d55;
 
-   Mono é a língua do código, não da página.
-   ══════════════════════════════════════════════════════════════ */
+  /* escada tonal: void e da hero, base e o chao das secoes,
+     raised sao os paineis dentro delas */
+  --color-base: #08060e;
+  --color-raised: #0c0a16;
 
-@theme inline {
-  --color-base: #08080a;
-  --color-panel: #0e0e11;
-  --color-raised: #151519;
-  --color-edge: #232327;
-  --color-edge-hi: #35353b;
+  /* específicos do profiler: estado de span */
+  --color-ok: #3de3a0;
+  --color-warn: #f5c542;
+  --color-err: #ff6b6b;
 
-  --color-ink: #fafafa;
-  --color-ink-2: #a1a1aa; /* zinc-400 · corpo   */
-  --color-ink-3: #71717a; /* zinc-500 · rótulo  */
-
-  /* âmbar: a feature matadora é custo em dólar, e âmbar lê como valor.
-     Não é o azul de todo produto de IA nem o verde de terminal hacker. */
-  --color-acc: #f5a623;
-  --color-acc-hi: #ffc255;
-  --color-err: #f2555a;
-  --color-ok: #3ecf8e;
-
-  --font-sans: var(--f-sans);
-  --font-mono: var(--f-mono);
+  --font-sora: var(--font-sora), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-jet: var(--font-jet), ui-monospace, monospace;
 }
 
 @layer base {
+  :root {
+    color-scheme: dark;
+    --hair: rgba(255, 255, 255, 0.1);
+    --glass: rgba(12, 10, 20, 0.6);
+    --viol-rgb: 138, 110, 255;
+  --crim-rgb: 255, 45, 85;
+    --ok-rgb: 61, 227, 160;
+    --err-rgb: 255, 107, 107;
+  }
+
+  * { box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+
   body {
+    margin: 0;
     background: var(--color-base);
     color: var(--color-ink);
-    font-family: var(--f-sans);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--color-viol); color: #fff; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-viol);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
   }
 }
 
-@keyframes pulseDot {
-  0%, 100% { opacity: 1 }
-  50%      { opacity: .3 }
-}
-.pulse-dot { animation: pulseDot 2s ease-in-out infinite }
+@layer components {
+  /* ── energia correndo pelas arestas do circuito ──
+     dashoffset animado em CSS: roda no compositor, não custa JS por quadro */
+  @keyframes fluxo-correr {
+    to {
+      stroke-dashoffset: -96;
+    }
+  }
 
-@keyframes dash {
-  to { stroke-dashoffset: -14 }
-}
-.flowing { stroke-dasharray: 4 5; animation: dash 1.1s linear infinite }
+  .fluxo {
+    stroke-dasharray: 8 40;
+    animation: fluxo-correr 1.9s linear infinite;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .pulse-dot, .flowing { animation: none }
+  .fluxo-laco {
+    stroke-dasharray: 7 26;
+    animation: fluxo-correr 0.62s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fluxo,
+    .fluxo-laco {
+      animation: none;
+    }
+  }
+
+  /* ── faixa corrida ── */
+  .ticker-track {
+    animation: ticker-slide 64s linear infinite;
+  }
+
+  .ticker-mask:hover .ticker-track {
+    animation-play-state: paused;
+  }
+
+  /* máscara em vez de gradiente sobreposto: funciona sobre qualquer fundo */
+  .ticker-mask {
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  @keyframes ticker-slide {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+    }
+  }
+
+  /* ── brasa das seções internas ── */
+  .ember {
+    animation: ember-breathe 26s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+  @keyframes ember-breathe {
+    from { opacity: .72; translate: 0 0; scale: 1; }
+    to   { opacity: 1;   translate: 3% 4%; scale: 1.12; }
+  }
+
+  /* ── revelação no scroll ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 700ms cubic-bezier(.16, 1, .3, 1),
+      transform 700ms cubic-bezier(.16, 1, .3, 1);
+  }
+  .reveal[data-shown] { opacity: 1; transform: none; }
+  @media (scripting: none) { .reveal { opacity: 1; transform: none; } }
+
+  /* ── pulso do LED de gravação ── */
+  @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ember { animation: none; opacity: .9; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .pulse-dot { animation: none; }
+  }
+}
+
+/* ── escala de seção ──────────────────────────────────────────────
+   Definida aqui, e não repetida em cada componente: título e rótulo
+   viviam como string Tailwind copiada em três arquivos, e já tinham
+   divergido em tamanho (44 / 36 / 28) e peso (600 / 700). Um lugar só. */
+@layer components {
+  .olho {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .olho i {
+    display: block;
+    width: 1.5rem;
+    height: 1px;
+    background: color-mix(in oklab, var(--color-viol) 70%, transparent);
+  }
+  .h-secao {
+    font-family: var(--font-sora);
+    font-size: clamp(28px, 3.2vw, 44px);
+    line-height: 1.07;
+    font-weight: 600;
+    letter-spacing: -0.034em;
+    color: #fff;
+  }
+  /* um degrau abaixo, na mesma curva: legenda de passo dentro da seção */
+  .h-passo {
+    font-family: var(--font-sora);
+    font-size: clamp(23px, 2.6vw, 34px);
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.034em;
+    color: #fff;
+  }
 }

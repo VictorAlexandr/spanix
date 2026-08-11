@@ -1,0 +1,40 @@
+[project]
+name = "spanix"
+version = "0.0.1"
+description = "A local profiler for AI agents. One line, no account, no server."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Victor Fernandes" }]
+keywords = ["agents", "profiler", "observability", "llm", "claude", "tokens", "cost"]
+dependencies = []
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Debuggers",
+  "Topic :: System :: Monitoring",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/VictorAlexandr/spanix"
+Source = "https://github.com/VictorAlexandr/spanix"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/spanix"]
+
+# Sem isto o sdist leva junto o site inteiro e as capturas de tela: 6 MB para
+# um pacote de 6 KB de código.
+[tool.hatch.build.targets.sdist]
+only-include = ["src/spanix", "README.md", "LICENSE", "pyproject.toml"]

@@ -5,15 +5,23 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "film": "remotion render remotion/index.ts SpanixDemo public/spanix-demo.mp4 --codec=h264 --crf=20",
+    "studio": "remotion studio remotion/index.ts"
   },
   "dependencies": {
+    "@remotion/player": "^4.0.507",
+    "framer-motion": "^13.1.0",
     "lucide-react": "^1.31.0",
     "next": "16.3.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "remotion": "^4.0.507"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.507",
+    "@remotion/google-fonts": "^4.0.507",
+    "@remotion/renderer": "^4.0.507",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -20,3 +20,10 @@ build/
 .DS_Store
 *.log
 .vercel
+
+# capturas de revisão: pesadas e efêmeras
+Captura de Tela*.png
+*.screenshot.png
+
+# doc interno de trabalho: publicar e decisao sua, nao default
+KNOWLEDGE.md

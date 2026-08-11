@@ -1,0 +1,21 @@
+spanix
+Copyright 2026 Victor Fernandes
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+---
+
+Third-party material bundled in this repository:
+
+* site/  — the landing page.
+  Brand marks are drawn from Simple Icons (CC0-1.0). The marks themselves
+  remain trademarks of their respective owners and are used only to state
+  runtime compatibility, not to imply endorsement.
+  Typefaces are loaded from Google Fonts: Sora, Inter, IBM Plex Mono and
+  JetBrains Mono, all under the SIL Open Font License 1.1.
+
+The Python package under src/ has no third-party code and no dependencies.
