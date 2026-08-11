@@ -25,7 +25,7 @@ from typing import Any, AsyncIterator, Callable
 from ._run import Run
 
 __all__ = ["watch", "last_run", "runs", "Run", "__version__"]
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 # Anel curto em memória. O disco (SQLite em ~/.spanix) chega na 0.1, junto com
 # o painel; gravar antes disso travaria um schema em público cedo demais.

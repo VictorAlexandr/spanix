@@ -1,6 +1,6 @@
 [project]
 name = "spanix"
-version = "0.0.1"
+version = "0.0.2"
 description = "A local profiler for AI agents. One line, no account, no server."
 readme = "README.md"
 requires-python = ">=3.10"
