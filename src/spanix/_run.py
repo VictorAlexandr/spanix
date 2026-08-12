@@ -1,3 +1,6 @@
+# Copyright 2026 Victor Fernandes
+# SPDX-License-Identifier: Apache-2.0
+
 """Accounting for one agent run.
 
 Design constraints, in order of importance:

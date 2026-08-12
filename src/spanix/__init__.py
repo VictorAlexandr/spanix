@@ -1,3 +1,6 @@
+# Copyright 2026 Victor Fernandes
+# SPDX-License-Identifier: Apache-2.0
+
 """spanix — a local profiler for AI agents.
 
 The data already exists. An agent SDK reports cost, tokens and duration on

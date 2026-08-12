@@ -104,12 +104,17 @@ const pc = (n: number, t: number) => `${(n / t) * 100}%`;
 
 const CODIGO: [string, React.ReactNode][] = [
   ["1", <><span className="text-[#c48bff]">from</span> <span className="text-ink-3">claude_agent_sdk</span> <span className="text-[#c48bff]">import</span> <span className="text-ink-3">query</span></>],
-  ["2", <><span className="text-[#c48bff]">from</span> <span className="text-ink-2">spanix</span> <span className="text-[#c48bff]">import</span> <span className="text-viol">watch</span></>],
+  ["2", <><span className="text-[#c48bff]">from</span> <span className="text-ink-2">spanix</span> <span className="text-[#c48bff]">import</span> <span className="text-viol">watch</span><span className="text-ink-3">, </span><span className="text-viol">last_run</span></>],
   ["3", <span />],
   ["4", <><span className="text-ink-3">stream = query(prompt=p, options=opts)</span></>],
   ["5", <span />],
   ["6", <><span className="text-[#c48bff]">async for</span> <span className="text-ink-3">msg</span> <span className="text-[#c48bff]">in</span> <span className="text-viol">watch</span><span className="text-ink-3">(stream, run=</span><span className="text-[#a3e07a]">&quot;nightly&quot;</span><span className="text-ink-3">):</span></>],
   ["7", <span className="pl-5 text-ink-3">handle(msg)</span>],
+  ["8", <span />],
+  /* Sem esta linha o trecho e copiavel mas MUDO: watch() contabiliza e nao
+     mostra. Faltava na LP e estava no README — codigo de vitrine que nao roda
+     e a primeira coisa que queima confianca em projeto open source. */
+  ["9", <><span className="text-ink-3">print(</span><span className="text-viol">last_run</span><span className="text-ink-3">().summary())</span></>],
 ];
 
 const FLUXO: [string, string, string, number][] = [
@@ -348,7 +353,7 @@ export function PanelSection() {
   });
   const cabecaOp = useTransform(p, (v) => jan(v, T0, T0 + 0.06) * (1 - jan(v, T1 - 0.05, T1 + 0.12)));
   const fimFluxo = useTransform(p, (v) => jan(v, 0.6, 0.7));
-  const saida = useTransform(p, (v) => jan(v, 0.3, 0.4));
+  const saida = useTransform(p, (v) => jan(v, 0.44, 0.54));
 
   return (
     <section id="panel" ref={palco} className="relative h-[500vh]">
@@ -488,6 +493,9 @@ export function PanelSection() {
                       <span className="flex items-center gap-2 border-t border-white/[.07] pt-4 text-[12.5px]">
                         <span className="text-ink-3">$</span>
                         <span className="text-ink-2">spanix serve</span>
+                        <span className="ml-auto rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-[1.5px] text-[8.5px] font-semibold tracking-[.07em] text-amber-500 uppercase">
+                          0.1
+                        </span>
                       </span>
                       <span className="mt-2.5 flex items-center gap-2.5 rounded-lg border border-white/[.07] bg-black/40 px-3.5 py-2.5 text-[11.5px]">
                         <span className="text-ok">▸</span>
