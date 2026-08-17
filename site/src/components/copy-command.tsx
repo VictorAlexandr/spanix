@@ -48,7 +48,7 @@ export default function CopyCommand({ cmd }: { cmd: string }) {
               <path
                 d="M3.4 8.5 6.3 11.4 12.6 5"
                 fill="none"
-                stroke="#3de3a0"
+                stroke="var(--color-viol)"
                 strokeWidth={2}
                 strokeLinecap="round"
                 strokeLinejoin="round"

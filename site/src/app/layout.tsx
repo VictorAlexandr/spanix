@@ -24,11 +24,13 @@ const mono = IBM_Plex_Mono({
 });
 
 /* JetBrains Mono só nos NÚMEROS do painel do produto. IBM Plex segue no
-   restante do site: chrome é uma coisa, dado de aplicação é outra. */
+   restante do site: chrome é uma coisa, dado de aplicação é outra.
+   O 700 entrou pro número grande da seção `the reach`: 500 em corpo de 60px
+   fica anêmico, e display precisa de peso pra ter presença sem efeito. */
 const jet = JetBrains_Mono({
   variable: "--font-jet",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 

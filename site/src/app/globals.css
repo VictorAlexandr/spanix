@@ -7,20 +7,71 @@
 
 @theme {
   --color-void: #050409;
-  --color-ink: #f2f1f7;
-  --color-ink-2: #c6c2d4;
-  --color-ink-3: #8e8aa0;
+  --color-ink: #f7f7f9;
+  --color-ink-2: #d5d5dd;
+  --color-ink-3: #9c9ca8;
   --color-viol: #8a6eff;
+  /* VIOLETA CLARO, PARA TEXTO PEQUENO.
+     O `--color-viol` é calibrado como PREENCHIMENTO: barra, LED, borda, halo.
+     Como texto ele desaba, e a razão é geométrica, não de contraste medido:
+     mono de 9–10px em caixa alta com `.2em` de tracking tem pouquíssima tinta
+     por glifo, e cor cromática nessa densidade perde de longe pra branco quase
+     puro (15,7:1 contra 7,2:1 do violeta cheio). O olho lê como "sumido".
+     Regra: violeta em texto abaixo de ~12px usa ESTE token; o `--color-viol`
+     fica para superfície. Mesmo raciocínio do 66 da seção 06, que só ficou
+     legível quando trocou #8A6EFF por um violeta claro chapado. */
+  --color-viol-txt: #cbbcff;
   --color-crim: #ff2d55;
 
   /* escada tonal: void e da hero, base e o chao das secoes,
-     raised sao os paineis dentro delas */
-  --color-base: #08060e;
-  --color-raised: #0c0a16;
+     raised sao os paineis dentro delas.
+
+     A base subiu de #08060E para #0C0B13. Quase-preto chapado não é
+     "escuro elegante", é ausência de informação: sem nenhuma luz no
+     fundo, cada superfície por cima precisa de borda e sombra fortes
+     pra existir, e é a soma dessas bordas que cansa a vista. Alguns
+     pontos de luminosidade a mais no chão fazem as bordas poderem ser
+     mais leves — e o conjunto pesa menos, não mais. */
+  --color-base: #0c0b13;
+  --color-raised: #12111c;
+
+  /* ── DUAS CORES, E UMA CONVIDADA ───────────────────────────────
+     A página inteira é ULTRAVIOLETA e CARMIM. Só isso.
+
+       ultravioleta  a marca e o agente. Aurora, ponto do logotipo, fios de
+                     rótulo, símbolos do spanix dentro do seu código, os
+                     agentes na linha do tempo, as costuras entre seções.
+       carmim        calor e desperdício. Ferramenta, o laço aceso, o alerta
+                     do terminal. É a cor de "olha aqui".
+       branco        todo número. Dinheiro deixou de ter matiz próprio: num
+                     painel onde duas cores já significam coisas, o valor
+                     mais importante não disputa matiz — ele estoura em
+                     branco puro, que é o contraste mais alto disponível.
+
+     E O MINT VIROU EXCLUSIVO DE UMA SEÇÃO: `reach`, a dos downloads. Isso
+     não é economia de cor, é dramaturgia — uma cor que aparece uma vez só,
+     no fim, marca aquele momento como diferente de tudo que veio antes. Se
+     ela estivesse no logotipo, no dinheiro e nos LEDs, chegaria no globo
+     gasta. Reservada, ela chega como notícia.
+
+     Custo de manter isso: nada de mint fora de `reach-section`, `globe` e
+     `downloads`. O grep que garante está no histórico desta decisão. */
+  --color-mint: #3dffc4;
 
   /* específicos do profiler: estado de span */
-  --color-ok: #3de3a0;
-  --color-warn: #f5c542;
+  /* `ok` é "isto é verdade agora": LED de status, `copied`, o selo de licença
+     da hero, os pontos vivos das janelas. Ele estava ALIASADO PRO VIOLETA
+     (#8a6eff), o que fazia a fileira de selos da hero ser roxa inteira — borda,
+     fundo, LED e o texto da licença — em cima de uma aurora que já é roxa. Cor
+     de marca no fundo E no acento em primeiro plano vira lavagem, não ênfase.
+
+     Agora aponta pro MINT, que já é o que a página usa pra fato confirmado: o
+     66 da seção 06, a coluna `v0.0.2 · no ar` do roadmap, a linha de tráfego
+     zerado da garantia. "Open source, Apache-2.0, v0.0.2 no PyPI" é exatamente
+     isso — fato conferível — então a cor passa a dizer a mesma coisa que o
+     texto. */
+  --color-ok: #3dffc4;
+  --color-warn: #ff2d55;
   --color-err: #ff6b6b;
 
   --font-sora: var(--font-sora), system-ui, sans-serif;
@@ -32,11 +83,19 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --hair: rgba(255, 255, 255, 0.1);
+    --hair: rgba(255, 255, 255, 0.09);
     --glass: rgba(12, 10, 20, 0.6);
     --viol-rgb: 138, 110, 255;
+    /* O violeta AMBIENTE é outro tom: mesmo matiz, croma baixo. Violeta
+       cheio espalhado em área grande sobre escuro vibra na retina, e é
+       isso que cansa depois de alguns segundos de leitura. O saturado
+       fica reservado pra marca pequena — símbolo, barra de dado, URL —
+       onde área pequena e vida curta é justamente o que faz cor forte
+       funcionar. */
+    --viol-ambiente: 132, 122, 168;
   --crim-rgb: 255, 45, 85;
-    --ok-rgb: 61, 227, 160;
+    --ok-rgb: 61, 255, 196;
+    --mint-rgb: 61, 255, 196;
     --err-rgb: 255, 107, 107;
   }
 
@@ -139,6 +198,81 @@
   .reveal[data-shown] { opacity: 1; transform: none; }
   @media (scripting: none) { .reveal { opacity: 1; transform: none; } }
 
+  /* ── trilho de progresso do carrossel ──
+     Escala em Y a partir do topo: o item ativo mostra quanto falta pro
+     próximo. Sem isso a troca automática parece falha de interface — com
+     isso ela é um relógio visível, e a pessoa entende que dá pra esperar
+     ou clicar. `key` no elemento reinicia a animação a cada troca. */
+  @keyframes trilho {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  .trilho {
+    transform-origin: top;
+    animation: trilho linear forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trilho {
+      animation: none;
+      transform: scaleY(1);
+    }
+  }
+
+  /* ── entrada do visual do carrossel ──
+     Deslocamento curto e uma curva só, a mesma do `.reveal`. Troca de slide
+     tem que ser percebida, não assistida. */
+  @keyframes visual-entra {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .visual-entra {
+    animation: visual-entra 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .visual-entra {
+      animation: none;
+    }
+  }
+
+  /* ── cursor do terminal ──
+     O cartão do código estica pra acompanhar a coluna de três ao lado, e
+     sobrava um vão preto embaixo da saída. A correção não foi encolher a
+     caixa: foi dar sentido ao vão. Terminal com prompt e cursor piscando no
+     fim não tem "espaço vazio" — tem espaço à espera do próximo comando, que
+     é exatamente o que um terminal parado é. */
+  @keyframes piscar {
+    0%,
+    48% {
+      opacity: 1;
+    }
+    52%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .cursor-bloco {
+    animation: piscar 1.15s steps(1) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-bloco {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+
   /* ── pulso do LED de gravação ── */
   @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:.3} }
   .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
@@ -148,6 +282,109 @@
     .reveal { opacity: 1; transform: none; transition: none; }
     .pulse-dot { animation: none; }
   }
+}
+
+/* ══ A QUEBRA CLARA ════════════════════════════════════════════════
+   A página é escura de ponta a ponta, e UMA seção não é: a do painel.
+
+   Ela é clara porque é a quebra, e a quebra tem um motivo. A hero é a
+   caixa preta — "Four agents running. Zero visibility." Quando a página
+   finalmente mostra a tela do produto, a luz acende, e depois volta pro
+   escuro. Uma quebra só; duas seriam alternância, e alternância não
+   significa nada.
+
+   Tudo aqui é token escopado em `.papel`, então nenhum componente carrega
+   cor literal e a zona inteira se apaga trocando este bloco.
+
+   Os neutros têm viés violeta (o acento da marca), não cinza puro: papel
+   com um sopro da aurora que ficou lá em cima. Cinza médio puro é o que
+   lê como não-escolhido. */
+.papel {
+  /* superfícies, do papel ao recesso */
+  --papel: #faf9fc;
+  --papel-2: #f2f0f8;
+  --papel-3: #e9e6f2;
+
+  /* tinta: near-black com viés violeta, nunca #000 */
+  --tinta: #14121c;
+  --tinta-2: #4c4759;
+  --tinta-3: #837d95;
+
+  --fio: rgba(20, 18, 28, 0.11);
+  --fio-forte: rgba(20, 18, 28, 0.22);
+
+  /* O violeta da marca (#8a6eff) dá 3,1:1 sobre papel — não serve para
+     texto. Este é o mesmo tom levado a um passo mais escuro: 6,6:1. */
+  --viol-papel: #5a38db;
+
+  background: var(--papel);
+  color: var(--tinta-2);
+}
+
+.papel ::selection {
+  background: var(--viol-papel);
+  color: #fff;
+}
+
+.papel :focus-visible {
+  outline-color: var(--viol-papel);
+}
+
+/* Título de seção na zona clara: mesma escala, tinta em vez de branco. */
+.papel .h-secao,
+.papel .h-passo {
+  color: var(--tinta);
+}
+
+.papel .olho {
+  color: var(--tinta-3);
+}
+
+.papel .olho i {
+  background: #0b8f6c;
+}
+
+/* ══ A JANELA DO PAINEL ═══════════════════════════════════════════
+   A seção 03 não é um gráfico desenhado na página: é o PRODUTO, dentro
+   de uma janela, como ele aparece quando você abre o localhost. Por isso
+   ela tem superfície própria e escura — um app de análise é escuro, e
+   fingir que o painel é branco porque a seção é branca seria mentir sobre
+   a tela que a pessoa vai ver.
+
+   O near-black aqui puxa violeta (#0E0B1A) e a moldura recebe um halo do
+   mesmo ultravioleta da aurora: é a hero reaparecendo lá embaixo, agora
+   como ferramenta em vez de atmosfera. */
+.painel {
+  /* ESCURO NEUTRO, sem viés de matiz. A versão anterior puxava violeta
+     (#0E0B1A) e por cima ainda levava um halo violeta: o resultado era uma
+     tela inteira lavada de roxo, onde o dado colorido não tinha contra o quê
+     saltar. Fundo tingido rouba do dado exatamente a cor que o dado precisa.
+
+     Aqui o chão é cinza-carvão puro e não compete com nada. É ele que deixa
+     o caminho quente estourar em ultravioleta e o dinheiro estourar em âmbar
+     sem que nenhum dos dois precise de brilho extra pra existir. */
+  --pn: #0a0a0c;
+  --pn-2: #101013;
+  --pn-3: #17171b;
+  --pn-fio: rgba(255, 255, 255, 0.08);
+  --pn-ink: #f7f7f9;
+  --pn-ink-2: #c6c6d0;
+  --pn-ink-3: #92929e;
+
+  /* cores de dado — fortes, e cada uma com um trabalho:
+     quente    o caminho que consumiu a execução (ultravioleta)
+     dinheiro  todo valor em dólar (neon mint)
+     O âmbar saiu: com o par violeta+mint definido, uma terceira cromática
+     só pra número seria uma cor a mais pra memorizar sem nada a mais pra
+     dizer. Mint é o mais claro dos dois, e dígito pede exatamente isso. */
+  --pn-dinheiro: var(--pn-ink);
+
+  color: var(--pn-ink-2);
+}
+
+.painel ::selection {
+  background: var(--color-viol);
+  color: #fff;
 }
 
 /* ── escala de seção ──────────────────────────────────────────────
@@ -169,7 +406,8 @@
     display: block;
     width: 1.5rem;
     height: 1px;
-    background: color-mix(in oklab, var(--color-viol) 70%, transparent);
+    /* fio de rótulo = marca falando = mint */
+    background: color-mix(in oklab, var(--color-viol) 72%, transparent);
   }
   .h-secao {
     font-family: var(--font-sora);
