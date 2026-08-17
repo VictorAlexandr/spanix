@@ -12,8 +12,12 @@ number is `0`, the public API may change without a major bump.
 
 ### Planned for 0.1.0
 - `~/.spanix/runs.db` — runs survive the process that produced them.
-- `spanix runs` — the run table, in the terminal.
-- `spanix serve` — the panel on `localhost`.
+- `spanix` — one command. Prints the last run, flags what moved, and hands
+  over the panel URL. Terminal answers whether; panel answers what.
+- The panel on `localhost:7788`, served from the standard library only, bound
+  to `127.0.0.1`.
+- Still zero dependencies: `argparse`, `http.server` and `sqlite3` cover the
+  whole of 0.1, so `pip install spanix` keeps bringing nothing else in.
 
 ## [0.0.2] — 2026-08-11
 
